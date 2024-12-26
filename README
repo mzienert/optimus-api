@@ -1,0 +1,190 @@
+# HyperExpress TypeScript Server Setup Instructions
+
+## Development Environment Setup
+
+1. Clone and setup project structure:
+```bash
+# Create project directory
+mkdir hyperexpress-typescript
+cd hyperexpress-typescript
+
+# Create necessary directories
+mkdir src
+mkdir src/logs
+```
+
+2. Initialize project files:
+```bash
+# Create package.json
+npm init -y
+
+# Install dependencies
+npm install hyper-express
+npm install --save-dev @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint rimraf ts-node ts-node-dev typescript
+```
+
+3. Create configuration files:
+- Copy `tsconfig.json` to root directory
+- Copy `ecosystem.config.js` to root directory
+- Copy development.sh and production.sh to root directory
+- Copy `src/app.ts` to src directory
+
+4. Make scripts executable:
+```bash
+chmod +x development.sh
+chmod +x production.sh
+```
+
+5. Start development server:
+```bash
+npm run setup:dev
+# Server will start on port 3000 with hot-reload enabled
+```
+
+## Production Environment Setup (EC2)
+
+1. SSH into your EC2 instance:
+```bash
+ssh -i ~/.ssh/galvitron-key-2 ec2-user@
+```
+
+2. Clone and setup project:
+```bash
+# Create project directory
+mkdir hyperexpress-typescript
+cd hyperexpress-typescript
+
+# Create necessary directories
+mkdir src
+mkdir src/logs
+```
+
+3. Initialize project files (same as development steps 2-3)
+```bash
+# Create package.json
+npm init -y
+
+# Install production dependencies only
+npm install hyper-express
+
+# Install dev dependencies (needed for build)
+npm install --save-dev typescript @types/node rimraf
+```
+
+4. Copy your source files to the EC2 instance:
+```bash
+# From your local machine
+scp -i ~/.ssh/galvitron-key-2 -r src/ tsconfig.json ecosystem.config.js package.json production.sh ec2-user@:/home/ec2-user/hyperexpress-typescript/
+```
+
+5. Make production script executable:
+```bash
+chmod +x production.sh
+```
+
+6. Start production server:
+```bash
+npm run setup:prod
+# Server will start on port 80 with PM2
+```
+
+## File Structure
+```
+hyperexpress-typescript/
+├── src/
+│   ├── app.ts
+│   └── logs/
+├── tsconfig.json
+├── ecosystem.config.js
+├── package.json
+├── development.sh
+└── production.sh
+```
+
+## Available Commands
+
+### Development
+```bash
+npm run dev           # Start development server with hot-reload
+npm run lint         # Run ESLint
+npm run lint:fix     # Fix ESLint issues
+npm run build        # Build TypeScript to JavaScript
+npm run clean        # Clean dist directory
+```
+
+### Production
+```bash
+npm run setup:prod   # Initial production setup and start
+npm run pm2:start    # Start the server with PM2
+npm run pm2:stop     # Stop the server
+npm run pm2:restart  # Restart the server
+npm run pm2:logs     # View server logs
+```
+
+## Verification Steps
+
+### Development
+1. Check server is running:
+```bash
+curl http://localhost:3000/hello
+```
+
+2. Check for hot-reload:
+```bash
+# Make a change to src/app.ts
+# Server should automatically restart
+```
+
+### Production
+1. Check server is running:
+```bash
+# Check PM2 status
+pm2 status
+
+# Check server response
+curl http://localhost/hello
+```
+
+2. Check logs:
+```bash
+npm run pm2:logs
+```
+
+3. Monitor memory usage:
+```bash
+pm2 monit
+```
+
+## Troubleshooting
+
+1. If port 80 is in use:
+```bash
+sudo lsof -i :80
+# Kill the process if needed
+sudo kill -9 
+```
+
+2. If PM2 process won't start:
+```bash
+# Check PM2 logs
+pm2 logs
+
+# Clear PM2 process list and try again
+pm2 delete all
+pm2 reset
+npm run setup:prod
+```
+
+3. If TypeScript build fails:
+```bash
+# Clean and rebuild
+npm run clean
+npm run build
+```
+
+4. If node_modules issues:
+```bash
+rm -rf node_modules
+rm package-lock.json
+npm install
+```
