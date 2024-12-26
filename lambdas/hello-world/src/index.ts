@@ -64,7 +64,7 @@ const queryTable = async (): Promise<any[]> => {
     try {
         console.log('Starting table query');
         const scanParams = {
-            TableName: process.env.DYNAMODB_TABLE || 'GalvitronTable',
+            TableName: process.env.DYNAMODB_TABLE || 'OptimusTable',
             FilterExpression: '#type = :type',
             ExpressionAttributeNames: {
                 '#type': 'type'

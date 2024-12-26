@@ -5,7 +5,7 @@ export NVM_DIR="/home/ec2-user/.nvm"
 export PM2_HOME="/home/ec2-user/.pm2"
 
 # Stop any existing instances
-pm2 delete sentinel 2>/dev/null || true
+pm2 delete optimus-api 2>/dev/null || true
 
 # Start in production mode
 pm2 start ecosystem.config.js --env production

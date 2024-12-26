@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: 'sentinel',
+    name: 'optimus-api',
     script: 'dist/app.js',
     instances: 1,
     exec_mode: 'fork',
@@ -11,13 +11,13 @@ module.exports = {
       NODE_ENV: 'production',
       PORT: 3000,
       AWS_REGION: 'us-west-1',
-      DYNAMODB_TABLE: 'GalvitronTable'
+      DYNAMODB_TABLE: 'OptimusTable'
     },
     env_production: {
       NODE_ENV: 'production',
       PORT: 80,
       AWS_REGION: 'us-west-1',
-      DYNAMODB_TABLE: 'GalvitronTable'
+      DYNAMODB_TABLE: 'OptimusTable'
     },
     time: true,
     log_date_format: 'YYYY-MM-DD HH:mm:ss Z',

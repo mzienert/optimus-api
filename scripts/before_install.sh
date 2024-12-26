@@ -7,7 +7,7 @@ export NVM_DIR="/home/ec2-user/.nvm"
 export PM2_HOME="/home/ec2-user/.pm2"
 
 # Try to stop the application gracefully
-pm2 delete sentinel || true
+pm2 delete optimus-api || true
 
 # Clean the application directory thoroughly
 if [ -d "/home/ec2-user/app" ]; then
