@@ -41,7 +41,7 @@ class App {
         this.server.get('/', async (_req, res) => {
             await res.send('Server is running!');
         });
-        this.server.get('/hello', async (_req, res) => {
+        this.server.get('/optimus', async (_req, res) => {
             const response = {
                 message: 'Hello from HyperExpress!',
                 timestamp: new Date().toISOString()
@@ -83,7 +83,7 @@ class App {
             await this.server.listen(this.port);
             console.log(`Server is running at http://localhost:${this.port} in ${process.env.NODE_ENV || 'development'} mode`);
             console.log(`Region: ${AWS_REGION}, DynamoDB Table: ${DYNAMODB_TABLE}`);
-            console.log(`Try: http://localhost:${this.port}/hello`);
+            console.log(`Try: http://localhost:${this.port}/optimus`);
             await this.wsClient.connect();
             console.log('WebSocket client initialized');
             this.isStarted = true;
